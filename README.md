@@ -10,3 +10,9 @@
 * Connect to the graph database Neo4j
 * Use Redis as a cache server
 * Create a basic UI to query the routes withing a defined and destination points
+
+
+### Used tools:
+* Microsoft Visual Studio 2017
+* Microsoft Visual Studio Code
+* Microsoft Management Studio
