@@ -26,7 +26,8 @@ namespace DeliveryService.API
 
             services.AddDbContext<DeliveryServiceDbContext>(options =>
                 //options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionStrings"])
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer("Server=.;Database=DeliveryServiceExercise;Trusted_Connection=True;")
             );
 
             services.AddScoped<ILocationRepository, LocationRepository>();

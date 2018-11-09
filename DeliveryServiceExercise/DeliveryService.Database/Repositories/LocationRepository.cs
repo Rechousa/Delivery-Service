@@ -23,7 +23,7 @@ namespace DeliveryService.Database.Repositories
 
         public async Task<bool> Exists(int id)
         {
-            return await _context.Locations.AnyAsync(c => c.Id == id);
+            return await _context.Locations.AnyAsync(t => t.Id == id);
         }
 
         public async Task<Location> Find(int id)
