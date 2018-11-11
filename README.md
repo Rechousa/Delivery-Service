@@ -46,13 +46,16 @@ Before running this exercise please make sure you have installed on your compute
 * Microsoft Management Studio
 * Powershell
 * Docker
+* Postman
 
 
 ### Online tools:
 * Generate guids: https://www.guidgenerator.com/
+* Mastering MarkDown: https://guides.github.com/features/mastering-markdown/
 * Complete list of github markdown emoji markup: https://gist.github.com/rxaviers/7360908
 * Cities of Porto District: https://codigopostal.ciberforma.pt/cidades/distrito-do-porto/
 * Cost and travel duration: https://www.viamichelin.pt/
+* Javascript Web Token Decoder: https://jwt.io/
 
 
 ### URLS's:

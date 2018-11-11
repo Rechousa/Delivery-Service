@@ -1,0 +1,276 @@
+{
+	"info": {
+		"_postman_id": "203e060a-25ad-487f-b761-c8833cd8bab3",
+		"name": "DeliveryExercise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetRoutes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44308/api/routes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRoute",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44308/api/routes/14/13",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"routes",
+						"14",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostRoute",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"locationA\": 14,\n    \"locationB\": 15,\n    \"distance\": 32,\n    \"cost\": 5\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/api/routes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutRoute",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"locationA\": 14,\n    \"locationB\": 15,\n    \"distance\": 32,\n    \"cost\": 500\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/api/routes/14/15",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"routes",
+						"14",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRoute",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"locationA\": 14,\n    \"locationB\": 15,\n    \"distance\": 32,\n    \"cost\": 700\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/api/routes/14/15",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"routes",
+						"14",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLocations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44308/api/locations",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"locations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLocation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44308/api/locations/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"locations",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostLocation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"name\": \"Lisboa\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/api/locations",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"locations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutLocation",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Id\": 17,\n    \"Name\": \"Alverca\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/api/locations/17",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"locations",
+						"17"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteLocation",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"locationA\": 14,\n    \"locationB\": 15,\n    \"distance\": 32,\n    \"cost\": 700\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/api/locations/18",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"api",
+						"locations",
+						"18"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
