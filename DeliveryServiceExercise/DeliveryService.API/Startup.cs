@@ -25,10 +25,11 @@ namespace DeliveryService.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<DeliveryServiceDbContext>(options =>
-                //options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionStrings"])
                 //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-                options.UseSqlServer("Server=.;Database=DeliveryServiceExercise;Trusted_Connection=True;")
+                options.UseSqlServer("Server=127.0.0.1,14330;Database=DeliveryServiceExercise;User Id=sa;Password=+YourStrong!Passw0rd+")
             );
+
+            services.AddCors();
 
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IRouteRepository, RouteRepository>();
@@ -44,6 +45,14 @@ namespace DeliveryService.API
             else
             {
                 app.UseHsts();
+            }
+
+            //app.UseCors(builder => builder.WithOrigins("https://localhost:44352"));
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<DeliveryServiceDbContext>();
+                context.Database.Migrate();
             }
 
             app.UseHttpsRedirection();

@@ -4,8 +4,6 @@ namespace DeliveryService.Database
 {
     public class Route
     {
-        public int Id { get; set; }
-
         [Required]
         public int LocationA { get; set; }
 

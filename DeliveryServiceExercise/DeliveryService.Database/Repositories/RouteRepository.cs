@@ -1,5 +1,6 @@
 ﻿using DeliveryService.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +9,8 @@ namespace DeliveryService.Database.Repositories
     public class RouteRepository : IRouteRepository
     {
         private readonly DeliveryServiceDbContext _context;
+
+        Func<Route, int, int, bool> searchPredicate = (Route route, int locationA, int locationB) => (route.LocationA == locationA && route.LocationB == locationB) || (route.LocationA == locationB && route.LocationB == locationA);
 
         public RouteRepository(DeliveryServiceDbContext context)
         {
@@ -21,14 +24,14 @@ namespace DeliveryService.Database.Repositories
             return route;
         }
 
-        public async Task<bool> Exists(int id)
+        public async Task<bool> Exists(int locationA, int locationB)
         {
-            return await _context.Routes.AnyAsync(c => c.Id == id);
+            return await _context.Routes.AnyAsync(t => searchPredicate(t, locationA, locationB));
         }
 
-        public async Task<Route> Find(int id)
+        public async Task<Route> Find(int locationA, int locationB)
         {
-            return await _context.Routes.SingleOrDefaultAsync(t => t.Id == id);
+            return await _context.Routes.SingleOrDefaultAsync(t => searchPredicate(t, locationA, locationB));
         }
 
         public IEnumerable<Route> GetAll()
@@ -36,9 +39,9 @@ namespace DeliveryService.Database.Repositories
             return _context.Routes;
         }
 
-        public async Task<Route> Remove(int id)
+        public async Task<Route> Remove(int locationA, int locationB)
         {
-            var route = await _context.Routes.SingleOrDefaultAsync(t => t.Id == id);
+            var route = await _context.Routes.SingleOrDefaultAsync(t => searchPredicate(t, locationA, locationB));
             _context.Routes.Remove(route);
             await _context.SaveChangesAsync();
             return route;

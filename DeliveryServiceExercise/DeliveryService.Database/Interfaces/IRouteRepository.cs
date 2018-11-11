@@ -9,12 +9,12 @@ namespace DeliveryService.Database.Interfaces
 
         IEnumerable<Route> GetAll();
 
-        Task<Route> Find(int id);
+        Task<Route> Find(int locationA, int locationB);
 
         Task<Route> Update(Route route);
 
-        Task<Route> Remove(int id);
+        Task<Route> Remove(int locationA, int locationB);
 
-        Task<bool> Exists(int id);
+        Task<bool> Exists(int locationA, int locationB);
     }
 }

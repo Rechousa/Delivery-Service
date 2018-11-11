@@ -4,6 +4,7 @@ namespace DeliveryService.Database
 {
     public class Location
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

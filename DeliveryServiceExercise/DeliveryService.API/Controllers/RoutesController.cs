@@ -18,9 +18,9 @@ namespace DeliveryService.API.Controllers
             _repository = routeRepository;
         }
 
-        private async Task<bool> RouteExistsAsync(int id)
+        private async Task<bool> RouteExistsAsync(int locationA, int locationB)
         {
-            return await _repository.Exists(id);
+            return await _repository.Exists(locationA, locationB);
         }
 
         [HttpGet]
@@ -31,12 +31,12 @@ namespace DeliveryService.API.Controllers
             return Ok(data);
         }
 
-        [HttpGet("{id}", Name = "GetRoute")]
-        public async Task<IActionResult> GetRoute([FromRoute] int id)
+        [HttpGet("{locationA}/{locationB}", Name = "GetRoute")]
+        public async Task<IActionResult> GetRoute([FromRoute] int locationA, [FromRoute] int locationB)
         {
-            if(await RouteExistsAsync(id))
+            if(await RouteExistsAsync(locationA, locationB))
             {
-                var data = await _repository.Find(id);
+                var data = await _repository.Find(locationA, locationB);
                 return Ok(data);
             }
 
@@ -53,23 +53,23 @@ namespace DeliveryService.API.Controllers
 
             await _repository.Add(route);
 
-            return CreatedAtAction("Route", new { id = route.Id }, route);
+            return CreatedAtAction("Route", new { locationA = route.LocationA, locationB = route.LocationB }, route);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRoute([FromRoute] int id, [FromBody] Route route)
+        [HttpPut("{locationA}/{locationB}")]
+        public async Task<IActionResult> PutRoute([FromRoute] int locationA, [FromRoute] int locationB, [FromBody] Route route)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (route.Id != id)
+            if (!((route.LocationA == locationA && route.LocationB == locationB) || (route.LocationA == locationB && route.LocationB == locationA)))
             {
                 return BadRequest();
             }
 
-            if(!await RouteExistsAsync(id))
+            if(!await RouteExistsAsync(locationA, locationB))
             {
                 return NotFound();
             }
@@ -79,15 +79,15 @@ namespace DeliveryService.API.Controllers
             return Ok(route);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRoute([FromRoute] int id)
+        [HttpDelete("{locationA}/{locationB}")]
+        public async Task<IActionResult> DeleteRoute([FromRoute] int locationA, [FromRoute] int locationB)
         {
-            if (!await RouteExistsAsync(id))
+            if (!await RouteExistsAsync(locationA, locationB))
             {
                 return NotFound();
             }
 
-            await _repository.Remove(id);
+            await _repository.Remove(locationA, locationB);
 
             return Ok();
         }

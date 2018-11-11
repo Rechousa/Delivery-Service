@@ -1,5 +1,6 @@
 ﻿using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,32 +11,33 @@ namespace DeliveryService.Tests
     {
         private readonly List<Route> _routes;
 
+        Func<Route, int, int, bool> searchPredicate = (Route route, int locationA, int locationB) => (route.LocationA == locationA && route.LocationB == locationB) || (route.LocationA == locationB && route.LocationB == locationA);
+
         public RouteRepositoryFake()
         {
             _routes = new List<Route>()
             {
-                new Route { Id = 1, LocationA = 1, LocationB = 2, Distance = 800, Cost = 300 },
-                new Route { Id = 2, LocationA = 1, LocationB = 3, Distance = 3000, Cost = 800 },
-                new Route { Id = 3, LocationA = 1, LocationB = 4, Distance = 1800, Cost = 410 },
-                new Route { Id = 4, LocationA = 1, LocationB = 5, Distance = 6000, Cost = 920 },
+                new Route { LocationA = 1, LocationB = 2, Distance = 800, Cost = 300 },
+                new Route { LocationA = 1, LocationB = 3, Distance = 3000, Cost = 800 },
+                new Route { LocationA = 1, LocationB = 4, Distance = 1800, Cost = 410 },
+                new Route { LocationA = 1, LocationB = 5, Distance = 6000, Cost = 920 },
             };
         }
 
         public Task<Route> Add(Route route)
         {
-            route.Id = _routes.Max(t => t.Id) + 1;
             _routes.Add(route);
             return Task.Run(() => route);
         }
 
-        public Task<bool> Exists(int id)
+        public Task<bool> Exists(int locationA, int locationB)
         {
-            return Task.Run(() => _routes.Any(t => t.Id == id));
+            return Task.Run(() => _routes.Any(t => searchPredicate(t, locationA, locationB)));
         }
 
-        public Task<Route> Find(int id)
+        public Task<Route> Find(int locationA, int locationB)
         {
-            return Task.Run(() => _routes.SingleOrDefault(t => t.Id == id));
+            return Task.Run(() => _routes.SingleOrDefault(t => searchPredicate(t, locationA, locationB)));
         }
 
         public IEnumerable<Route> GetAll()
@@ -43,9 +45,9 @@ namespace DeliveryService.Tests
             return _routes;
         }
 
-        public Task<Route> Remove(int id)
+        public Task<Route> Remove(int locationA, int locationB)
         {
-            var routeInDB = _routes.Single(t => t.Id == id);
+            var routeInDB = _routes.Single(t => searchPredicate(t, locationA, locationB));
             _routes.Remove(routeInDB);
 
             return Task.Run(() => routeInDB);
@@ -53,7 +55,7 @@ namespace DeliveryService.Tests
 
         public Task<Route> Update(Route route)
         {
-            var routeInDB = _routes.Single(t => t.Id == route.Id);
+            var routeInDB = _routes.Single(t => searchPredicate(t, route.LocationA, route.LocationB));
             routeInDB = route;
 
             return Task.Run(() => routeInDB);

@@ -39,13 +39,13 @@ namespace DeliveryService.Tests
         }
 
         [TestMethod]
-        [DataRow(1)]
-        public void RouteFakeRepositoryGetExistingItemTest(int id)
+        [DataRow(1, 2)]
+        public void RouteFakeRepositoryGetExistingItemTest(int locationA, int locationB)
         {
             // Arrange:
 
             // Act:
-            var request = _controller.GetRoute(id).Result;
+            var request = _controller.GetRoute(locationA, locationB).Result;
             var okResult = request as OkObjectResult;
 
             // Assert:
@@ -54,19 +54,20 @@ namespace DeliveryService.Tests
             Assert.IsInstanceOfType(okResult.Value, typeof(Route));
 
             var item = okResult.Value as Route;
-            Assert.AreEqual(1, item.Id);
+            Assert.AreEqual(1, item.LocationA);
+            Assert.AreEqual(2, item.LocationB);
             Assert.AreEqual(300, item.Cost);
         }
 
 
         [TestMethod]
-        [DataRow(0)]
-        public void RouteFakeRepositoryGetNonExistingItemTest(int id)
+        [DataRow(0, 0)]
+        public void RouteFakeRepositoryGetNonExistingItemTest(int locationA, int locationB)
         {
             // Arrange:
 
             // Act:
-            var request = _controller.GetRoute(id).Result;
+            var request = _controller.GetRoute(locationA, locationB).Result;
             var notFoundResult = request as NotFoundResult;
 
             // Assert:
@@ -75,13 +76,13 @@ namespace DeliveryService.Tests
 
 
         [TestMethod]
-        [DataRow(1, 300)]
-        [DataRow(2, 800)]
-        [DataRow(3, 410)]
-        [DataRow(4, 920)]
-        public void RouteFakeRepositoryGetMultipleExistingItemsTest(int id, int cost)
+        [DataRow(1, 2, 300)]
+        [DataRow(1, 3, 800)]
+        [DataRow(1, 4, 410)]
+        [DataRow(1, 5, 920)]
+        public void RouteFakeRepositoryGetMultipleExistingItemsTest(int locationA, int locationB, int cost)
         {
-            var request = _controller.GetRoute(id).Result;
+            var request = _controller.GetRoute(locationA, locationB).Result;
             var okResult = request as OkObjectResult;
 
             // Assert:
@@ -90,23 +91,24 @@ namespace DeliveryService.Tests
             Assert.IsInstanceOfType(okResult.Value, typeof(Route));
 
             var item = okResult.Value as Route;
-            Assert.AreEqual(id, item.Id);
+            Assert.AreEqual(locationA, item.LocationA);
+            Assert.AreEqual(locationB, item.LocationB);
             Assert.AreEqual(cost, item.Cost);
         }
 
 
         [TestMethod]
-        [DataRow(-1)]
-        [DataRow(-2)]
-        [DataRow(-3)]
-        [DataRow(int.MinValue)]
-        [DataRow(int.MaxValue)]
-        public void RouteFakeRepositoryGetMultipleNonExistingItemsTest(int id)
+        [DataRow(-1, -1)]
+        [DataRow(-2, -2)]
+        [DataRow(-3, -3)]
+        [DataRow(int.MinValue, int.MinValue)]
+        [DataRow(int.MaxValue, int.MaxValue)]
+        public void RouteFakeRepositoryGetMultipleNonExistingItemsTest(int locationA, int locationB)
         {
             // Arrange:
 
             // Act:
-            var request = _controller.GetRoute(id).Result;
+            var request = _controller.GetRoute(locationA, locationB).Result;
             var notFoundResult = request as NotFoundResult;
 
             // Assert:
@@ -133,10 +135,10 @@ namespace DeliveryService.Tests
         public void RouteFakeRepositoryUpdateItem()
         {
             // Arrange:
-            var route = new Route { Id = 1, LocationA = 1, LocationB = 2, Distance = 800, Cost = 299 };
+            var route = new Route { LocationA = 1, LocationB = 2, Distance = 800, Cost = 299 };
 
             // Act:
-            var request = _controller.PutRoute(1, route).Result;
+            var request = _controller.PutRoute(1, 2, route).Result;
             var result = request as OkObjectResult;
 
             // Assert:
@@ -150,7 +152,7 @@ namespace DeliveryService.Tests
             // Arrange:
 
             // Act:
-            var request = _controller.DeleteRoute(4).Result;
+            var request = _controller.DeleteRoute(1, 2).Result;
             var result = request as OkResult;
 
             // Assert:
