@@ -1,4 +1,5 @@
 using DeliveryService.API.Controllers;
+using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -119,7 +120,7 @@ namespace DeliveryService.Tests
         public void LocationFakeRepositoryCreateItem()
         {
             // Arrange:
-            var location = new Location { Name = "Berlin" };
+            var location = new LocationAddVM { Name = "Berlin" };
 
             // Act:
             var request = _controller.PostLocation(location).Result;
@@ -134,7 +135,7 @@ namespace DeliveryService.Tests
         public void LocationFakeRepositoryUpdateItem()
         {
             // Arrange:
-            var location = new Location { Id = 1, Name = "Porto" };
+            var location = new LocationEditVM { Id = 1, Name = "Porto" };
 
             // Act:
             var request = _controller.PutLocation(1, location).Result;

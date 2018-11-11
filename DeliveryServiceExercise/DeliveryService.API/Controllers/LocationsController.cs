@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -44,20 +45,21 @@ namespace DeliveryService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostLocation([FromBody] Location location)
+        public async Task<IActionResult> PostLocation([FromBody] LocationAddVM location)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _repository.Add(location);
+            var locationToBeAdded = LocationAddVM.ToLocation(location);
+            await _repository.Add(locationToBeAdded);
 
-            return CreatedAtAction("Location", new { id = location.Id }, location);
+            return CreatedAtAction("GetLocation", new { id = locationToBeAdded.Id }, locationToBeAdded);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation([FromRoute] int id, [FromBody] Location location)
+        public async Task<IActionResult> PutLocation([FromRoute] int id, [FromBody] LocationEditVM location)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +76,9 @@ namespace DeliveryService.API.Controllers
                 return NotFound();
             }
 
-            await _repository.Update(location);
+            var locationInDb = await _repository.Find(id);
+
+            await _repository.Update(LocationEditVM.UpdateLocationData(locationInDb, location));
 
             return Ok(location);
         }

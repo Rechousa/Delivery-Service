@@ -1,4 +1,5 @@
 using DeliveryService.API.Controllers;
+using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +33,9 @@ namespace DeliveryService.Tests
             // Assert:
             Assert.AreEqual(HttpStatusCode.OK, (HttpStatusCode)okResult.StatusCode);
             Assert.IsNotNull(okResult.Value);
-            Assert.IsInstanceOfType(okResult.Value, typeof(List<Route>));
+            Assert.IsInstanceOfType(okResult.Value, typeof(List<RouteVM>));
 
-            var items = okResult.Value as List<Route>;
+            var items = okResult.Value as List<RouteVM>;
             Assert.AreEqual(4, items.Count);
         }
 
@@ -51,9 +52,9 @@ namespace DeliveryService.Tests
             // Assert:
             Assert.AreEqual(HttpStatusCode.OK, (HttpStatusCode)okResult.StatusCode);
             Assert.IsNotNull(okResult.Value);
-            Assert.IsInstanceOfType(okResult.Value, typeof(Route));
+            Assert.IsInstanceOfType(okResult.Value, typeof(RouteVM));
 
-            var item = okResult.Value as Route;
+            var item = okResult.Value as RouteVM;
             Assert.AreEqual(1, item.LocationA);
             Assert.AreEqual(2, item.LocationB);
             Assert.AreEqual(300, item.Cost);
@@ -88,9 +89,9 @@ namespace DeliveryService.Tests
             // Assert:
             Assert.AreEqual(HttpStatusCode.OK, (HttpStatusCode)okResult.StatusCode);
             Assert.IsNotNull(okResult.Value);
-            Assert.IsInstanceOfType(okResult.Value, typeof(Route));
+            Assert.IsInstanceOfType(okResult.Value, typeof(RouteVM));
 
-            var item = okResult.Value as Route;
+            var item = okResult.Value as RouteVM;
             Assert.AreEqual(locationA, item.LocationA);
             Assert.AreEqual(locationB, item.LocationB);
             Assert.AreEqual(cost, item.Cost);
@@ -120,7 +121,7 @@ namespace DeliveryService.Tests
         public void RouteFakeRepositoryCreateItem()
         {
             // Arrange:
-            var route = new Route { LocationA = 2, LocationB = 4, Distance = 1000, Cost = 212 };
+            var route = new RouteVM { LocationA = 2, LocationB = 4, Distance = 1000, Cost = 212 };
 
             // Act:
             var request = _controller.PostRoute(route).Result;
@@ -135,7 +136,7 @@ namespace DeliveryService.Tests
         public void RouteFakeRepositoryUpdateItem()
         {
             // Arrange:
-            var route = new Route { LocationA = 1, LocationB = 2, Distance = 800, Cost = 299 };
+            var route = new RouteVM { LocationA = 1, LocationB = 2, Distance = 800, Cost = 299 };
 
             // Act:
             var request = _controller.PutRoute(1, 2, route).Result;

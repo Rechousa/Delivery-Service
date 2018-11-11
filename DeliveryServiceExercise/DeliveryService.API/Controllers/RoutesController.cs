@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryService.API.Controllers
 {
@@ -27,8 +27,9 @@ namespace DeliveryService.API.Controllers
         public IActionResult GetRoute()
         {
             var data = _repository.GetAll();
+            var vm = data.Select(t => RouteVM.FromRoute(t)).ToList();
 
-            return Ok(data);
+            return Ok(vm);
         }
 
         [HttpGet("{locationA}/{locationB}", Name = "GetRoute")]
@@ -37,27 +38,28 @@ namespace DeliveryService.API.Controllers
             if(await RouteExistsAsync(locationA, locationB))
             {
                 var data = await _repository.Find(locationA, locationB);
-                return Ok(data);
+                var vm = RouteVM.FromRoute(data);
+                return Ok(vm);
             }
 
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostRoute([FromBody] Route route)
+        public async Task<IActionResult> PostRoute([FromBody] RouteVM route)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _repository.Add(route);
+            await _repository.Add(RouteVM.ToRoute(route));
 
-            return CreatedAtAction("Route", new { locationA = route.LocationA, locationB = route.LocationB }, route);
+            return CreatedAtAction("GetRoute", new { locationA = route.LocationA, locationB = route.LocationB }, route);
         }
 
         [HttpPut("{locationA}/{locationB}")]
-        public async Task<IActionResult> PutRoute([FromRoute] int locationA, [FromRoute] int locationB, [FromBody] Route route)
+        public async Task<IActionResult> PutRoute([FromRoute] int locationA, [FromRoute] int locationB, [FromBody] RouteVM route)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +76,9 @@ namespace DeliveryService.API.Controllers
                 return NotFound();
             }
 
-            await _repository.Update(route);
+            var routeInDb = await _repository.Find(locationA, locationB);
+
+            await _repository.Update(RouteVM.UpdateRouteData(routeInDb, route));
 
             return Ok(route);
         }
