@@ -15,5 +15,7 @@ namespace DeliveryService.Database
 
         [Required]
         public int Cost { get; set; }
+
+        public int Views { get; set; }
     }
 }
