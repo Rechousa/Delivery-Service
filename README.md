@@ -50,7 +50,7 @@ Before running this exercise please make sure you have installed on your compute
     ```
     docker run --name DeliveryServiceExerciseREDIS -d redis
     ```
-    * Please notice that your local post **14330** will be mapped to the 1433 port of the container
+    * Please notice that your local post **6379 ** will be mapped to the 6379 port of the container
 
 4. Start a new instance of Microsoft Visual Studio and open the solution file 'DeliveryServiceExercise.sln'
 5. Ensure the DeliveryServiceExercise.API project is selected and press Execute
@@ -78,11 +78,5 @@ Before running this exercise please make sure you have installed on your compute
 
 ### URLS's:
 * WebApi: https://localhost:44308/
-* Identity Server Endpoint: https://localhost:44328/
+* WebApi Documentation (Swagger): https://localhost:44308/swagger
 * Demo (ASP.Net Core Web Application): https://localhost:44352/
-
-
-### Identity Server:
-* Discovery Endpoint: https://localhost:44328/.well-known/openid-configuration
-
-
