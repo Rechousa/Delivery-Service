@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryService.API.Controllers
 {
@@ -44,6 +43,7 @@ namespace DeliveryService.API.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> PostLocation([FromBody] LocationAddVM location)
         {
@@ -58,6 +58,7 @@ namespace DeliveryService.API.Controllers
             return CreatedAtAction("GetLocation", new { id = locationToBeAdded.Id }, locationToBeAdded);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLocation([FromRoute] int id, [FromBody] LocationEditVM location)
         {
@@ -83,6 +84,7 @@ namespace DeliveryService.API.Controllers
             return Ok(location);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation([FromRoute] int id)
         {

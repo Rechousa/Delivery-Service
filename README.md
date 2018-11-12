@@ -9,7 +9,8 @@
 * :heavy_check_mark: Populate with some example data
 * :heavy_check_mark: Use a docker container for SQL Server
 * :heavy_check_mark: Add Logging and global exception handling
-* :x: Implement a Security solution
+* :heavy_check_mark: Implement a security mechanism based on JWT
+
 
 ### Nice to have:
 * :x: Use Identity Server as a centralized access control manager
@@ -53,13 +54,14 @@ Before running this exercise please make sure you have installed on your compute
 * Postman
 
 
-### Online tools used in this exercise:
+### Online tools/resources used in this exercise:
 * Generate guids: https://www.guidgenerator.com/
 * Mastering MarkDown: https://guides.github.com/features/mastering-markdown/
 * Complete list of github markdown emoji markup: https://gist.github.com/rxaviers/7360908
 * Cities of Porto District: https://codigopostal.ciberforma.pt/cidades/distrito-do-porto/
 * Cost and travel duration: https://www.viamichelin.pt/
 * Javascript Web Token Decoder: https://jwt.io/
+* Microsoft REST API Guidelines: https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md
 
 
 ### URLS's:

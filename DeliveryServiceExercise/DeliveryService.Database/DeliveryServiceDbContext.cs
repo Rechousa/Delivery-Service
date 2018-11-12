@@ -16,6 +16,8 @@ namespace DeliveryService.Database
                 table.LocationA,
                 table.LocationB
             });
+
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeliveryService.API.Controllers
@@ -45,6 +46,7 @@ namespace DeliveryService.API.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> PostRoute([FromBody] RouteVM route)
         {
@@ -58,6 +60,7 @@ namespace DeliveryService.API.Controllers
             return CreatedAtAction("GetRoute", new { locationA = route.LocationA, locationB = route.LocationB }, route);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("{locationA}/{locationB}")]
         public async Task<IActionResult> PutRoute([FromRoute] int locationA, [FromRoute] int locationB, [FromBody] RouteVM route)
         {
@@ -83,6 +86,7 @@ namespace DeliveryService.API.Controllers
             return Ok(route);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{locationA}/{locationB}")]
         public async Task<IActionResult> DeleteRoute([FromRoute] int locationA, [FromRoute] int locationB)
         {
