@@ -10,13 +10,13 @@
 * :heavy_check_mark: Use a docker container for SQL Server
 * :heavy_check_mark: Add Logging and global exception handling
 * :heavy_check_mark: Implement a security mechanism based on JWT
+* :heavy_check_mark: Use Redis as a cache server
 
 
 ### Nice to have:
 * :x: Use Identity Server as a centralized access control manager
 * :x: Use OpenID Connect to manage authorization
 * :x: Connect to the graph database Neo4j
-* :x: Use Redis as a cache server
 * :x: Create a basic UI to query the routes withing a defined and destination points
 
 
@@ -29,7 +29,7 @@ Before running this exercise please make sure you have installed on your compute
 
 ## Instructions:
 1. Clone or download to your computer this project
-2. Start a new powershell terminal window and run the following command to download the most recent docker image of Microsoft SQL Server 2017
+2. Start a new powershell terminal window and run the following command to download the most recent docker image of Microsoft SQL Server 2017:
     ```
     docker pull mcr.microsoft.com/mssql/server:2017-latest
     ```
@@ -40,8 +40,19 @@ Before running this exercise please make sure you have installed on your compute
     ```
     * Please notice that your local post **14330** will be mapped to the 1433 port of the container
 
-3. Start a new instance of Microsoft Visual Studio and open the solution file 'DeliveryServiceExercise.sln'
-4. Ensure the DeliveryServiceExercise.API project is selected and press Execute
+3. Run the following command to download the most recent docker image of REDIS:
+    ```
+    docker pull redis
+    ```
+    After download finishes, let's start a new container, named DeliveryServiceExerciseREDIS, with the REDIS In-Memory NoSQL database
+
+    ```
+    docker run --name DeliveryServiceExerciseREDIS -d redis
+    ```
+    * Please notice that your local post **14330** will be mapped to the 1433 port of the container
+
+4. Start a new instance of Microsoft Visual Studio and open the solution file 'DeliveryServiceExercise.sln'
+5. Ensure the DeliveryServiceExercise.API project is selected and press Execute
 
 
 

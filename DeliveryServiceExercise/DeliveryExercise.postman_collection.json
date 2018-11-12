@@ -10,10 +10,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
 					"raw": "https://localhost:44308/api/routes",
 					"protocol": "https",
@@ -34,10 +31,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
 					"raw": "https://localhost:44308/api/routes/14/13",
 					"protocol": "https",
@@ -149,12 +143,19 @@
 		{
 			"name": "GetLocations",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiSm9obiBEb2UiLCJqdGkiOiIzMWJiMjBmMS1hNGE0LTQxNzgtOGZlMS1iNjY1NmMzOWEwOTEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsIm5iZiI6MTU0MTk5NjEyNCwiZXhwIjoxNTQ0NTg4MTI0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDMwOC8iLCJhdWQiOiJkZWxpdmVyeS1zZXJ2aWNlLWNsaWVudCJ9.rUkw6rLqfDLUNCdUWpIzKPGei9MmlM6RBOm3wbkNOaA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
 					"raw": "https://localhost:44308/api/locations",
 					"protocol": "https",
@@ -175,10 +176,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
 					"raw": "https://localhost:44308/api/locations/1",
 					"protocol": "https",
@@ -279,6 +277,96 @@
 						"api",
 						"locations",
 						"18"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetToken - Authentication Failure",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Login\": \"wrong\",\n    \"Password\": \"credentials\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetToken - Basic User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Login\": \"basic\",\n    \"Password\": \"demo\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetToken - Admin User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Login\": \"admin\",\n    \"Password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44308/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44308",
+					"path": [
+						"token"
 					]
 				}
 			},

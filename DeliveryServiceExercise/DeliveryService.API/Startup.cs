@@ -64,6 +64,12 @@ namespace DeliveryService.API
 
             services.AddCors();
 
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("Redis");
+                options.InstanceName = appSettingsSection["RedisInstanceName"];
+            });
+
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IRouteRepository, RouteRepository>();
             services.AddScoped<IUserManager, UserManager>();

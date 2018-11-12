@@ -1,20 +1,25 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using DeliveryService.API.Infrastructure;
 using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace DeliveryService.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoutesController : ControllerBase
+    public class RoutesController : DeliveryServiceBaseController
     {
+        private readonly string REDIS_Cache_Key = "RoutesVM";
+
         private readonly IRouteRepository _repository;
 
-        public RoutesController(IRouteRepository routeRepository)
+        public RoutesController(IRouteRepository routeRepository, IDistributedCache cache) : base(cache)
         {
             _repository = routeRepository;
         }
@@ -27,8 +32,16 @@ namespace DeliveryService.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRoutes()
         {
+            var cacheContent = GetCachedItem<List<RouteVM>>(REDIS_Cache_Key);
+            if (cacheContent != null)
+            {
+                return Ok(cacheContent);
+            }
+
             var data = await _repository.GetAll();
             var vm = data.Select(t => RouteVM.FromRoute(t)).ToList();
+
+            CacheItem(REDIS_Cache_Key, vm);
 
             return Ok(vm);
         }

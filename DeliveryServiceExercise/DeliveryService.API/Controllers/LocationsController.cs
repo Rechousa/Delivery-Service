@@ -1,19 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using DeliveryService.API.Infrastructure;
 using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace DeliveryService.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationsController : ControllerBase
+    public class LocationsController : DeliveryServiceBaseController
     {
+        private readonly string REDIS_Cache_Key = "Locations";
+
         private readonly ILocationRepository _repository;
 
-        public LocationsController(ILocationRepository locationRepository)
+        public LocationsController(ILocationRepository locationRepository, IDistributedCache cache) : base(cache)
         {
             _repository = locationRepository;
         }
@@ -26,7 +31,14 @@ namespace DeliveryService.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLocations()
         {
+            var cacheContent = GetCachedItem<List<Location>>(REDIS_Cache_Key);
+            if(cacheContent != null)
+            {
+                return Ok(cacheContent);
+            }
+
             var data = await _repository.GetAll();
+            CacheItem(REDIS_Cache_Key, data);
 
             return Ok(data);
         }
