@@ -28,7 +28,7 @@ Before running this exercise please make sure you have installed on your compute
 
 ## Instructions:
 1. Clone or download to your computer this project
-2. Start a new powershell terminal window and the run the following command to download the most recent docker image of Microsoft SQL Server 2017
+2. Start a new powershell terminal window and run the following command to download the most recent docker image of Microsoft SQL Server 2017
     ```
     docker pull mcr.microsoft.com/mssql/server:2017-latest
     ```
@@ -44,7 +44,7 @@ Before running this exercise please make sure you have installed on your compute
 
 
 
-### Local tools:
+###  Local tools used in this exercise:
 * Microsoft Visual Studio 2017
 * Microsoft Visual Studio Code
 * Microsoft Management Studio
@@ -53,7 +53,7 @@ Before running this exercise please make sure you have installed on your compute
 * Postman
 
 
-### Online tools:
+### Online tools used in this exercise:
 * Generate guids: https://www.guidgenerator.com/
 * Mastering MarkDown: https://guides.github.com/features/mastering-markdown/
 * Complete list of github markdown emoji markup: https://gist.github.com/rxaviers/7360908
