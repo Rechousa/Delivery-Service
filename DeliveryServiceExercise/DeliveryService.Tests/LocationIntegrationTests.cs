@@ -1,6 +1,7 @@
 using DeliveryService.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
 using System.Net.Http;
@@ -14,7 +15,16 @@ namespace DeliveryService.Tests
 
         public LocationIntegrationTests()
         {
-            var server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+            var server = new TestServer(new WebHostBuilder()
+                .UseEnvironment("Development")
+                //.UseContentRoot(projectDir)
+                .UseConfiguration(new ConfigurationBuilder()
+                    //.SetBasePath(projectDir)
+                    .AddJsonFile("appsettings.json")
+                    .Build()
+                )
+                .UseStartup<Startup>());
+
             _client = server.CreateClient();
         }
 
@@ -107,7 +117,7 @@ namespace DeliveryService.Tests
             var response = _client.SendAsync(request).Result;
 
             // Assert:
-            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
         }
     }
 }

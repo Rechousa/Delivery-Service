@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DeliveryService.API.Infrastructure;
+using DeliveryService.API.Settings;
 using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 
 namespace DeliveryService.API.Controllers
 {
@@ -14,11 +16,11 @@ namespace DeliveryService.API.Controllers
     [ApiController]
     public class LocationsController : DeliveryServiceBaseController
     {
-        private readonly string REDIS_Cache_Key = "Locations";
-
         private readonly ILocationRepository _repository;
 
-        public LocationsController(ILocationRepository locationRepository, IDistributedCache cache) : base(cache)
+        public LocationsController(ILocationRepository locationRepository,
+            IDistributedCache cache,
+            IOptions<AppSettings> appSettings) : base(cache, appSettings)
         {
             _repository = locationRepository;
         }
@@ -31,14 +33,14 @@ namespace DeliveryService.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLocations()
         {
-            var cacheContent = GetCachedItem<List<Location>>(REDIS_Cache_Key);
+            var cacheContent = GetCachedItem<List<Location>>(ApplicationConstants.Redis_Locations_Cache_Key);
             if(cacheContent != null)
             {
                 return Ok(cacheContent);
             }
 
             var data = await _repository.GetAll();
-            CacheItem(REDIS_Cache_Key, data);
+            CacheItem(ApplicationConstants.Redis_Locations_Cache_Key, data);
 
             return Ok(data);
         }
@@ -55,7 +57,7 @@ namespace DeliveryService.API.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = ApplicationConstants.Role_Admin)]
         [HttpPost]
         public async Task<IActionResult> PostLocation([FromBody] LocationAddVM location)
         {
@@ -70,7 +72,7 @@ namespace DeliveryService.API.Controllers
             return CreatedAtAction("GetLocation", new { id = locationToBeAdded.Id }, locationToBeAdded);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = ApplicationConstants.Role_Admin)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLocation([FromRoute] int id, [FromBody] LocationEditVM location)
         {
@@ -96,7 +98,7 @@ namespace DeliveryService.API.Controllers
             return Ok(location);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = ApplicationConstants.Role_Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation([FromRoute] int id)
         {

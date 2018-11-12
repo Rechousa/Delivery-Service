@@ -50,18 +50,18 @@ namespace DeliveryService.API.Controllers
 
             if(user.IsAdmin)
             {
-                claims.Add(new Claim(ClaimTypes.Role, "admin"));
+                claims.Add(new Claim(ClaimTypes.Role, ApplicationConstants.Role_Admin));
             }
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_appSettings.Secret));
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_appSettings.JWTSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _appSettings.Issuer, // My app: issued by
-                audience: _appSettings.Audience, // Client app: issued for
+                issuer: _appSettings.JWTIssuer, // My app: issued by
+                audience: _appSettings.JWTAudience, // Client app: issued for
                 claims: claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(30), // Valid for 30 days
+                expires: DateTime.Now.AddDays(_appSettings.JWTExpiresInDays), // Valid for X days
                 signingCredentials: creds
             );
 

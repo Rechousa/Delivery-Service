@@ -2,10 +2,15 @@
 {
     public class AppSettings
     {
-        public string Secret { get; set; }
+        public string JWTSecret { get; set; }
 
-        public string Issuer { get; set; }
+        public string JWTIssuer { get; set; }
 
-        public string Audience { get; set; }
+        public string JWTAudience { get; set; }
+
+        public int JWTExpiresInDays { get; set; }
+
+
+        public int RedisKeyTimeToLiveInSeconds { get; set; }
     }
 }

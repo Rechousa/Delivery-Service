@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DeliveryService.API.Infrastructure;
+using DeliveryService.API.Settings;
 using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 
 namespace DeliveryService.API.Controllers
 {
@@ -15,11 +17,11 @@ namespace DeliveryService.API.Controllers
     [ApiController]
     public class RoutesController : DeliveryServiceBaseController
     {
-        private readonly string REDIS_Cache_Key = "RoutesVM";
-
         private readonly IRouteRepository _repository;
 
-        public RoutesController(IRouteRepository routeRepository, IDistributedCache cache) : base(cache)
+        public RoutesController(IRouteRepository routeRepository,
+            IDistributedCache cache,
+            IOptions<AppSettings> appSettings) : base(cache, appSettings)
         {
             _repository = routeRepository;
         }
@@ -32,7 +34,7 @@ namespace DeliveryService.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRoutes()
         {
-            var cacheContent = GetCachedItem<List<RouteVM>>(REDIS_Cache_Key);
+            var cacheContent = GetCachedItem<List<RouteVM>>(ApplicationConstants.Redis_Routes_Cache_Key);
             if (cacheContent != null)
             {
                 return Ok(cacheContent);
@@ -41,7 +43,7 @@ namespace DeliveryService.API.Controllers
             var data = await _repository.GetAll();
             var vm = data.Select(t => RouteVM.FromRoute(t)).ToList();
 
-            CacheItem(REDIS_Cache_Key, vm);
+            CacheItem(ApplicationConstants.Redis_Routes_Cache_Key, vm);
 
             return Ok(vm);
         }
@@ -59,7 +61,7 @@ namespace DeliveryService.API.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = ApplicationConstants.Role_Admin)]
         [HttpPost]
         public async Task<IActionResult> PostRoute([FromBody] RouteVM route)
         {
@@ -73,7 +75,7 @@ namespace DeliveryService.API.Controllers
             return CreatedAtAction("GetRoute", new { locationA = route.LocationA, locationB = route.LocationB }, route);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = ApplicationConstants.Role_Admin)]
         [HttpPut("{locationA}/{locationB}")]
         public async Task<IActionResult> PutRoute([FromRoute] int locationA, [FromRoute] int locationB, [FromBody] RouteVM route)
         {
@@ -99,7 +101,7 @@ namespace DeliveryService.API.Controllers
             return Ok(route);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = ApplicationConstants.Role_Admin)]
         [HttpDelete("{locationA}/{locationB}")]
         public async Task<IActionResult> DeleteRoute([FromRoute] int locationA, [FromRoute] int locationB)
         {

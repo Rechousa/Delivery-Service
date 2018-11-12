@@ -40,7 +40,6 @@ namespace DeliveryService.API
                 options.UseSqlServer("Server=127.0.0.1,14330;Database=DeliveryServiceExercise;User Id=sa;Password=+YourStrong!Passw0rd+")
             );
 
-
             services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = "JwtBearer";
                 options.DefaultChallengeScheme = "JwtBearer";
@@ -49,13 +48,13 @@ namespace DeliveryService.API
                     jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettingsSection["Secret"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettingsSection["JWTSecret"])),
 
                         ValidateIssuer = true,
-                        ValidIssuer = appSettingsSection["Issuer"],
+                        ValidIssuer = appSettingsSection["JWTIssuer"],
 
                         ValidateAudience = true,
-                        ValidAudience = appSettingsSection["Audience"],
+                        ValidAudience = appSettingsSection["JWTAudience"],
 
                         ValidateLifetime = true, //validate the expiration and not before values in the token
 
@@ -75,7 +74,7 @@ namespace DeliveryService.API
             // Swagger:
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "DeliveryService API", Version = "v1" });
+                c.SwaggerDoc(appSettingsSection["ApplicationVersion"], new Info { Title = appSettingsSection["ApplicationTitle"], Version = appSettingsSection["ApplicationVersion"] });
             });
 
             services.AddScoped<ILocationRepository, LocationRepository>();
@@ -89,6 +88,8 @@ namespace DeliveryService.API
             DeliveryServiceDbContext context,
             ILoggerFactory loggerFactory)
         {
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -99,8 +100,7 @@ namespace DeliveryService.API
             }
 
             loggerFactory.AddLog4Net();
-
-            var logger = loggerFactory.CreateLogger("WebAPI");
+            var logger = loggerFactory.CreateLogger(appSettingsSection["Log4NetLoggerName"]);
             app.ConfigureExceptionHandler(logger);
 
             //app.UseCors(builder => builder.WithOrigins("https://localhost:44352"));
@@ -115,7 +115,7 @@ namespace DeliveryService.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DeliveryService API V1");
+                c.SwaggerEndpoint(appSettingsSection["SwaggerEndpoint"], $"{appSettingsSection["ApplicationTitle"]} {appSettingsSection["ApplicationVersion"]}");
             });
 
             app.UseAuthentication();

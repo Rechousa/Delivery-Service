@@ -1,8 +1,11 @@
 using DeliveryService.API.Controllers;
+using DeliveryService.API.Settings;
 using DeliveryService.Common;
 using DeliveryService.Database;
 using DeliveryService.Database.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Net;
@@ -14,11 +17,15 @@ namespace DeliveryService.Tests
     {
         RoutesController _controller;
         IRouteRepository _repository;
+        IDistributedCache _cache;
+        IOptions<AppSettings> _appSettings;
 
         public RouteFakeRepositoryTests()
         {
             _repository = new RouteRepositoryFake();
-            _controller = new RoutesController(_repository);
+            _cache = new RedisCacheFake();
+            _appSettings = new AppSettingsOptionsFake();
+            _controller = new RoutesController(_repository, _cache, _appSettings);
         }
 
         [TestMethod]
