@@ -31,9 +31,9 @@ namespace DeliveryService.Database.Repositories
             return await _context.Locations.SingleOrDefaultAsync(t => t.Id == id);
         }
 
-        public IEnumerable<Location> GetAll()
+        public async Task<IEnumerable<Location>> GetAll()
         {
-            return _context.Locations;
+            return await _context.Locations.ToListAsync();
         }
 
         public async Task<Location> Remove(int id)

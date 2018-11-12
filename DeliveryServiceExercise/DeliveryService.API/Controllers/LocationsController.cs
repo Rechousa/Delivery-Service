@@ -25,9 +25,9 @@ namespace DeliveryService.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetLocation()
+        public async Task<IActionResult> GetLocations()
         {
-            var data = _repository.GetAll();
+            var data = await _repository.GetAll();
 
             return Ok(data);
         }

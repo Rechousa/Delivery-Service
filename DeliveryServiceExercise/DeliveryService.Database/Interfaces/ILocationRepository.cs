@@ -7,7 +7,7 @@ namespace DeliveryService.Database.Interfaces
     {
         Task<Location> Add(Location location);
 
-        IEnumerable<Location> GetAll();
+        Task<IEnumerable<Location>> GetAll();
 
         Task<Location> Find(int id);
 

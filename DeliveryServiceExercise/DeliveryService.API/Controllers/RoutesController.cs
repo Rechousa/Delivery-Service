@@ -24,9 +24,9 @@ namespace DeliveryService.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetRoute()
+        public async Task<IActionResult> GetRoutes()
         {
-            var data = _repository.GetAll();
+            var data = await _repository.GetAll();
             var vm = data.Select(t => RouteVM.FromRoute(t)).ToList();
 
             return Ok(vm);

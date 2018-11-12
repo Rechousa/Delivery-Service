@@ -27,7 +27,7 @@ namespace DeliveryService.Tests
             // Arrange:
 
             // Act:
-            var request = _controller.GetRoute();
+            var request = _controller.GetRoutes().Result;
             var okResult = request as OkObjectResult;
 
             // Assert:

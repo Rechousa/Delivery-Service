@@ -34,9 +34,9 @@ namespace DeliveryService.Database.Repositories
             return await _context.Routes.SingleOrDefaultAsync(t => searchPredicate(t, locationA, locationB));
         }
 
-        public IEnumerable<Route> GetAll()
+        public async Task<IEnumerable<Route>> GetAll()
         {
-            return _context.Routes;
+            return await _context.Routes.ToListAsync();
         }
 
         public async Task<Route> Remove(int locationA, int locationB)

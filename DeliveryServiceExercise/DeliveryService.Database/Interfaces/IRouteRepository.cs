@@ -7,7 +7,7 @@ namespace DeliveryService.Database.Interfaces
     {
         Task<Route> Add(Route route);
 
-        IEnumerable<Route> GetAll();
+        Task<IEnumerable<Route>> GetAll();
 
         Task<Route> Find(int locationA, int locationB);
 

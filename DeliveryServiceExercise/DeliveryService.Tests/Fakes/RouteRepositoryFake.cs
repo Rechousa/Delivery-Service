@@ -40,9 +40,9 @@ namespace DeliveryService.Tests
             return Task.Run(() => _routes.SingleOrDefault(t => searchPredicate(t, locationA, locationB)));
         }
 
-        public IEnumerable<Route> GetAll()
+        public Task<IEnumerable<Route>> GetAll()
         {
-            return _routes;
+            return Task.Run(() => _routes.AsEnumerable());
         }
 
         public Task<Route> Remove(int locationA, int locationB)

@@ -39,9 +39,9 @@ namespace DeliveryService.Tests
             return Task.Run(() => _locations.SingleOrDefault(t => t.Id == id));
         }
 
-        public IEnumerable<Location> GetAll()
+        public Task<IEnumerable<Location>> GetAll()
         {
-            return _locations;
+            return Task.Run(() => _locations.AsEnumerable());
         }
 
         public Task<Location> Remove(int id)
