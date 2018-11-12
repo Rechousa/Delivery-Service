@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Text;
 
@@ -64,10 +65,17 @@ namespace DeliveryService.API
 
             services.AddCors();
 
+            // Redis:
             services.AddDistributedRedisCache(options =>
             {
                 options.Configuration = Configuration.GetConnectionString("Redis");
                 options.InstanceName = appSettingsSection["RedisInstanceName"];
+            });
+
+            // Swagger:
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "DeliveryService API", Version = "v1" });
             });
 
             services.AddScoped<ILocationRepository, LocationRepository>();
@@ -102,6 +110,13 @@ namespace DeliveryService.API
                 //var context = serviceScope.ServiceProvider.GetRequiredService<DeliveryServiceDbContext>();
                 context.Database.Migrate();
             }
+
+            // Swagger:
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DeliveryService API V1");
+            });
 
             app.UseAuthentication();
 

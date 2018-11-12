@@ -11,6 +11,7 @@
 * :heavy_check_mark: Add Logging and global exception handling
 * :heavy_check_mark: Implement a security mechanism based on JWT
 * :heavy_check_mark: Use Redis as a cache server
+* :heavy_check_mark: Install Swagger OpenAPI documentation generator
 
 
 ### Nice to have:
