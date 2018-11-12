@@ -8,6 +8,10 @@
 * :heavy_check_mark: Add Entity Framework Core
 * :heavy_check_mark: Populate with some example data
 * :heavy_check_mark: Use a docker container for SQL Server
+* :heavy_check_mark: Add Logging and global exception handling
+* :x: Implement a Security solution
+
+### Nice to have:
 * :x: Use Identity Server as a centralized access control manager
 * :x: Use OpenID Connect to manage authorization
 * :x: Connect to the graph database Neo4j
