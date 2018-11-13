@@ -17,9 +17,9 @@
 
 
 ### What would be nice to have:
-* :black_circle: Replace user management with Identity Server as a centralized access control manager
-* :black_circle: Improve authorization with OpenID Connect
-* :black_circle: Improve Neo4j database synchronization
+* Replace user management with Identity Server as a centralized access control manager
+* Improve authorization with OpenID Connect
+* Improve Neo4j database synchronization
 
 
 # Pre-requisites:
@@ -61,11 +61,12 @@ Three docker images / containers are required to run this demonstration. They ar
     ```
     * Please notice that your local port **7474** (for HTTP) will be mapped to the 7474 port of the container. Also notice that your local the port **7687** (for Bolt) will be mapped to the 7687 port of the container.
 
-5. Open a web browser and navigate to http://localhost:7474/browser/. This will open the Neo4j manager and it requires immediately to change the password. Go ahed and change the password to 'teste' (without single quotes). Since the solution is already configured with this password, the interaction with Neo4j should work with no problems.
+5. Open a web browser and navigate to http://localhost:7474/browser/. This will open the Neo4j manager and it requires immediately to change the password. Go ahead and change the password to 'teste' (without single quotes). Since the solution is already configured with this password, the connectivity with Neo4j should work with no problems.
 6. Start a new instance of Microsoft Visual Studio and open the solution file 'DeliveryServiceExercise.sln'
-7. Ensure the DeliveryServiceExercise.API project is selected and press Execute. Solution is configured wiht multi startup projects, so both the WebAPI project and the Web UI should start running.
-8. If prompted from your browser to accept or install any certificate, please do it. That's fine, it's just a security confirmation.
+7. Ensure the DeliveryServiceExercise.API project is selected and press Execute. Solution is configured with multi startup projects, so both the WebAPI project and the Web UI should start running at once.
+8. If prompted from your browser to accept or install any certificate, please do it. That's fine, it's just a security confirmation. Please check the screenshots on Others > Screenshots > Insecure*.png.
 9. In case of the application is not working or you find these instructions incomplete, please feel free to contact me. I'll be very happy to help.
+10. If everything is working correctly, you should see the Web application (please refer to the screenshots on Others > Screenshots > WebApplication*.png) and you should be able to find the cheapest or shortest routes between some cities of Porto District. Enjoy!
 
 
 # Other informations:
