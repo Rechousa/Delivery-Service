@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    var apiURL = ViewData["apiURL"];
 }
 
 <div class="jumbotron">
@@ -40,7 +40,7 @@
         $(function () {
             const $container = $('.locationcontainer')
 
-            $.getJSON('https://localhost:44308/api/locations/', function (data) {
+            $.getJSON('@apiURL/locations/', function (data) {
                 var html = '<select title="Pick a city" class="selectpicker" data-live-search="true">';
                 for (var i = 0; i < data.length; i++) {
                     const item = data[i];
@@ -73,12 +73,12 @@
 
                 const type = $(this).data('type');
                 if (type === 'shortest') {
-                    $.getJSON('https://localhost:44308/api/routefinder/shortest/' + originId + '/' + destinationId, function (data) {
+                    $.getJSON('@apiURL/routefinder/shortest/' + originId + '/' + destinationId, function (data) {
                         outputRoutes(data);
                     });
                 }
                 else {
-                    $.getJSON('https://localhost:44308/api/routefinder/cheapest/' + originId + '/' + destinationId, function (data) {
+                    $.getJSON('@apiURL/routefinder/cheapest/' + originId + '/' + destinationId, function (data) {
                         outputRoutes(data);
                     });
                 }
