@@ -12,5 +12,12 @@
 
 
         public int RedisKeyTimeToLiveInSeconds { get; set; }
+
+
+        public string GraphDatabaseEndpoint { get; set; }
+
+        public string GraphDatabaseLogin { get; set; }
+
+        public string GraphDatabasePassword { get; set; }
     }
 }

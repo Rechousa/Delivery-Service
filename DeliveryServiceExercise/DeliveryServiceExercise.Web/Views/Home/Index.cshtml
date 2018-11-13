@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Delivery Service Exercise Demo</h1>
+    <p class="lead">The place where you find the shortest or cheaps routes on the web.</p>
+    <p>Choose two cities and we'll find you the best route!</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Step 1: Origin</h3>
+        <div class="locationcontainer js-origin"></div>
+    </div>
+    <div class="col-md-4">
+        <h3>Step 2: Origin</h3>
+        <div class="locationcontainer js-destination"></div>
+    </div>
+    <div class="col-md-4">
+        <h3>Step 3: Mode</h3>
+        <button type="button" class="btn btn-success btn-lg js-findroute" data-type="cheapest">
+            <span class="glyphicon glyphicon-euro"></span> Cheapest
+        </button>
+
+        <button type="button" class="btn btn-info btn-lg js-findroute" data-type="shortest">
+            <span class="glyphicon glyphicon-road"></span> Shortest
+        </button>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div id="output"></div>
+</div>
+
+@section bodyScripts {
+    <script>
+        $(function () {
+            const $container = $('.locationcontainer')
+
+            $.getJSON('https://localhost:44308/api/locations/', function (data) {
+                var html = '<select title="Pick a city" class="selectpicker" data-live-search="true">';
+                for (var i = 0; i < data.length; i++) {
+                    const item = data[i];
+                    html += '<option value=' + item.id + '>' + item.name + '</option>';
+                }
+                html += '</select>';
+
+                $container.empty().append(html);
+                $container.find('.selectpicker').selectpicker();
+            });
+
+            $('.body-content').on('click', '.js-findroute', function () {
+                const bodyContent = $('.body-content');
+                const originId = bodyContent.find('.js-origin option:selected').val();
+                const destinationId = bodyContent.find('.js-destination option:selected').val();
+
+                if (!originId) {
+                    alert('Please select the origin city');
+                    return;
+                }
+                if (!destinationId) {
+                    alert('Please select the destination city');
+                    return;
+                }
+
+                if (originId === destinationId) {
+                    alert('Please select two different cities');
+                    return;
+                }
+
+                const type = $(this).data('type');
+                if (type === 'shortest') {
+                    $.getJSON('https://localhost:44308/api/routefinder/shortest/' + originId + '/' + destinationId, function (data) {
+                        outputRoutes(data);
+                    });
+                }
+                else {
+                    $.getJSON('https://localhost:44308/api/routefinder/cheapest/' + originId + '/' + destinationId, function (data) {
+                        outputRoutes(data);
+                    });
+                }
+            });
+        });
+
+        function outputRoutes(data) {
+            if (!data || data.length == 0) {
+                $("#output").html('<h3>Sorry, no routes where found.</h3>');
+                return;
+            }
+
+            var html = '<table class="table table-striped"><thead><tr><th>Route</th><th>Total Cost</th><th>Total Distance</th></tr></thead><tbody>';
+            for (var i = 0; i < data.length; i++) {
+                const item = data[i];
+                html += '<tr><td>' + item.message + '</td><td>' + item.totalCost + '</td><td>' + item.totalDistance + '</td></tr>';
+            }
+            html += '</tbody></table>';
+            $("#output").html(html);
+        }
+    </script>
+}

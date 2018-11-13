@@ -1,4 +1,5 @@
 ﻿using DeliveryService.API.Extensions;
+using DeliveryService.API.Infrastructure;
 using DeliveryService.API.Settings;
 using DeliveryService.Common;
 using DeliveryService.Database;
@@ -80,6 +81,7 @@ namespace DeliveryService.API
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IRouteRepository, RouteRepository>();
             services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<IGraphManager, GraphManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,12 +105,12 @@ namespace DeliveryService.API
             var logger = loggerFactory.CreateLogger(appSettingsSection["Log4NetLoggerName"]);
             app.ConfigureExceptionHandler(logger);
 
-            //app.UseCors(builder => builder.WithOrigins("https://localhost:44352"));
+            app.UseCors(builder => builder.WithOrigins(appSettingsSection["ClientWebApplication"].Split(',')));
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                //var context = serviceScope.ServiceProvider.GetRequiredService<DeliveryServiceDbContext>();
                 context.Database.Migrate();
+                serviceScope.ServiceProvider.GetRequiredService<IGraphManager>().SyncDatabase();
             }
 
             // Swagger:
